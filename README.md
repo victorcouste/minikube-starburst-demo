@@ -1,6 +1,7 @@
 # minikube-starburst-demo
 
-:::image type="content" source="minikube-starburst.png" alt-text="Minikube Starburst":::
+<img src="https://github.com/victorcouste/minikube-starburst-demo/raw/main/minikube-starburst.png" width="80%" height="80%">
+
 
 Command line, script and templates to quickly setup a [Starburst Enterprise](https://www.starburst.io/platform/starburst-enterprise/) demonstration environnement on a small and local [Kubernetes](https://kubernetes.io) cluster.
 
