@@ -30,14 +30,20 @@ NB: Before you run mini-starburst.sh: Make sure you do the following:
 ```
 mini-starburst.sh
 ```
-At the end of the execution, 3 Web user interfaces will open:
+At the end of the deployment process (around 5 minutes duration), 3 Web user interfaces will open:
 - Starburst Enterprise Insights UI to monitor and query the Starburst cluster
 - Ranger UI to manage users, roles and permission policies
 - Kubernetes dashboard UI to manage applications and the cluster
 
-To delete Helm releases, stop or delete the cluster:
+## Clean:
+
+To delete Helm releases and repositories:
 ```
 helm delete ranger hive starburst-enterprise postgresql
+helm repo remove starburstdata bitnami
+```
+To stop or delete the cluster:
+```
 minikube stop
 minikube delete
 ```
@@ -46,64 +52,86 @@ minikube delete
 
 Main commands executed in mini-starburst.sh shell script:
 
+Start a single-node 6CPUs and 16GB memory minikube cluster
 ```
-# Start a single-node 6CPUs and 16GB memory minikube cluster
 minikube start --cpus 6 --memory 16GB
+```
 
-# Add bitnami Helm repo and install PostgreSQL chart
+Add bitnami Helm repo and install PostgreSQL chart
+```
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install postgresql bitnami/postgresql
+```
 
-# Get PostgreSQL default password
+Get PostgreSQL default password
+```
 export POSTGRES_PASSWORD=$(kubectl get secret --namespace default postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
+```
 
-# Create an event_logger PostgreSQL database to store Starburst event logs and Insights data
+Create an event_logger PostgreSQL database to store Starburst event logs and Insights data
+```
 kubectl run postgresql-client --rm --tty -i --restart='Never' --namespace default --image docker.io/bitnami/postgresql:11.11.0-debian-10-r0 --env="PGPASSWORD=$POSTGRES_PASSWORD" --command -- psql --host postgresql -U postgres -d postgres -p 5432 -c 'CREATE DATABASE event_logger'
+```
 
-# Update chart values template files with PostgreSQL password and Starburst Helm repo credentials
+Update chart values template files with PostgreSQL password and Starburst Helm repo credentials
+```
 sed "s/__POSTGRES_PASSWORD__/$POSTGRES_PASSWORD/g; s/__USERNAME_HARBOR_CHART_REPO__/$USERNAME_HARBOR_CHART_REPO/g; s/__PASSWORD_HARBOR_CHART_REPO__/$PASSWORD_HARBOR_CHART_REPO/g;" starburst_values_template.yaml > starburst_values.yaml
 sed "s/__USERNAME_HARBOR_CHART_REPO__/$USERNAME_HARBOR_CHART_REPO/g; s/__PASSWORD_HARBOR_CHART_REPO__/$PASSWORD_HARBOR_CHART_REPO/g;" ranger_values_template.yaml > ranger_values.yaml
 sed "s/__USERNAME_HARBOR_CHART_REPO__/$USERNAME_HARBOR_CHART_REPO/g; s/__PASSWORD_HARBOR_CHART_REPO__/$PASSWORD_HARBOR_CHART_REPO/g;" hive_values_template.yaml > hive_values.yaml
+```
 
-# Add Starburst Harbor Helm repository
+Add Starburst Harbor Helm repository
+```
 helm repo add --username $USERNAME_HARBOR_CHART_REPO --password $PASSWORD_HARBOR_CHART_REPO starburstdata https://harbor.starburstdata.net/chartrepo/starburstdata
+```
 
-# Create Starburst secret for license keys
+Create Starburst secret for license keys
+```
 kubectl create secret generic starburstdata --from-file=starburstdata.license
+```
 
-# Install Ranger Helm chart
+Install Ranger Helm chart
+```
 helm install ranger starburstdata/starburst-ranger --version $STARBURST_VERSION --values ranger_values.yaml
+```
 
-# Install Hive Helm chart
+Install Hive Helm chart
+```
 helm install hive starburstdata/starburst-hive --version $STARBURST_VERSION --values hive_values.yaml
+```
 
-# Install Starburst Helm chart
+Install Starburst Helm chart
+```
 helm install starburst-enterprise starburstdata/starburst-enterprise --version $STARBURST_VERSION --values starburst_values.yaml
+```
 
-# List Helm releases
+List Helm releases, cluster deployments, pods and services
+```
 helm list
-# List deployements
 kubectl get deployments
-# List pods status
 kubectl get pods -o wide
-# List services status
 kubectl get services
+```
 
-# Get Ranger UI URL
+Get Ranger UI URL, and connect with admin/RangerPassword1 credentials
+```
 ranger_url=$(minikube service ranger --url)
-# Connect with admin/RangerPassword1 credentials
+```
 
-# Get Starburst Insights UI URL
+Get Starburst Insights UI URL, and connect with starburst_service user
+```
 starburst_url=$(minikube service starburst --url)
 starburst_insights_url=$starburst_url'/ui/insights'
-# Connect with starburst_service user
+```
 
-# If you want to connect to the cluster from a local client
+If you want to connect to the cluster from a local client
+New URL will be http://localhost:7080/ui/insights and JDBC URL jdbc:trino://localhost:7080
+
+```
 kubectl port-forward service/starburst 7080:8080ÒÒ
-# New URL http://localhost:7080/ui/insights
-# JDBC URL jdbc:trino://localhost:7080
+```
 
-# To  open minikube dashboard (Kubernetes dashboard UI for applications and cluster management/monitoring) at http://127.0.0.1:65401/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy
+To  open minikube dashboard (Kubernetes dashboard UI for applications and cluster management/monitoring)
+```
 minikube dashboard
-
 ```
