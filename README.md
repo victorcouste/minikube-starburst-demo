@@ -21,9 +21,9 @@ NB: Before you run mini-starburst.sh: Make sure you do the following:
 
 
 ## Requirements
-- minikube [Installation instruction](https://minikube.sigs.k8s.io/docs/start) (no need to start a cluster)
-- kubectl [Installation instructions](https://kubernetes.io/docs/tasks/tools)
-- Helm [Installation instructions](https://helm.sh/docs/intro/install)
+- minikube - [Installation instruction](https://minikube.sigs.k8s.io/docs/start) (no need to start a cluster)
+- kubectl - [Installation instructions](https://kubernetes.io/docs/tasks/tools)
+- Helm - [Installation instructions](https://helm.sh/docs/intro/install)
  
 ## Run
 
@@ -129,7 +129,7 @@ Run below command if you want to connect to the cluster from a local client
 The new URL will be http://localhost:7080/ui/insights and the JDBC URL **jdbc:trino://localhost:7080**
 
 ```
-kubectl port-forward service/starburst 7080:8080ÒÒ
+kubectl port-forward service/starburst 7080:8080
 ```
 
 To  open minikube dashboard (Kubernetes dashboard UI for applications and cluster management/monitoring)
