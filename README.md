@@ -50,7 +50,7 @@ minikube delete
 
 ## Command line explanation
 
-Main commands executed in mini-starburst.sh shell script:
+Main commands executed in mini-starburst.sh shell script.
 
 Start a single-node 6CPUs and 16GB memory minikube cluster
 ```
