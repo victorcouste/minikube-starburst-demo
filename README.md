@@ -35,7 +35,7 @@ At the end of the deployment process (around 5 minutes duration), 3 Web user int
 - Ranger UI to manage users, roles and permission policies (**admin/RangerPassword1** credentials)
 - Kubernetes dashboard UI to manage applications deployed and the cluster
 
-## Command line explanation
+## Commands explanation
 
 Main commands executed in [mini-starburst.sh](mini-starburst.sh) shell script.
 
