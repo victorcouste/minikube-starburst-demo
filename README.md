@@ -33,9 +33,16 @@ NB: Before you run **mini-starburst.sh**, make sure you do the following:
 ```
 mini-starburst.sh
 ```
-At the end of the deployment process (around 5 minutes duration), 3 Web user interfaces will open:
-- Starburst Enterprise Insights UI to monitor and query the Starburst cluster (**starburst_service** user)
-- Ranger UI to manage users, roles and permission policies (**admin/RangerPassword1** credentials)
+At the end of the deployment process (around 5 minutes duration), there will be 6 pods in your cluster:
+- 1 Trino Coordinator pod
+- 2 Trino Workers pod
+- 1 Ranger pod
+- 1 Hive pod
+- 1 PostgreSQL pod
+
+And 3 Web user interfaces will open:
+- Starburst Enterprise Insights UI to monitor and query the Starburst cluster (default user **starburst_service**)
+- Ranger UI to manage users, roles and permission policies (credentials **admin/RangerPassword1**)
 - Kubernetes dashboard UI to manage applications deployed and the cluster
 
 ## Commands explanation
