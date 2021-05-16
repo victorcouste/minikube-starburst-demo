@@ -35,19 +35,6 @@ At the end of the deployment process (around 5 minutes duration), 3 Web user int
 - Ranger UI to manage users, roles and permission policies (**admin/RangerPassword1** credentials)
 - Kubernetes dashboard UI to manage applications deployed and the cluster
 
-## Clean
-
-To delete Helm releases or repositories:
-```
-helm delete ranger hive starburst-enterprise postgresql
-helm repo remove starburstdata bitnami
-```
-To stop or delete the cluster:
-```
-minikube stop
-minikube delete
-```
-
 ## Command line explanation
 
 Main commands executed in [mini-starburst.sh](mini-starburst.sh) shell script.
@@ -135,4 +122,17 @@ kubectl port-forward service/starburst 7080:8080
 To  open minikube dashboard (Kubernetes dashboard UI for applications and cluster management/monitoring)
 ```
 minikube dashboard
+```
+
+## Clean
+
+To delete Helm releases or repositories:
+```
+helm delete ranger hive starburst-enterprise postgresql
+helm repo remove starburstdata bitnami
+```
+To stop or delete the cluster:
+```
+minikube stop
+minikube delete
 ```
