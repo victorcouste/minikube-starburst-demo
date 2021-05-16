@@ -16,7 +16,7 @@ NB: Before you run **mini-starburst.sh**, make sure you do the following:
 - Add in your folder a Starburst license file (**starburstdata.license**), which you can get from your friendly local Starburst Solutions Architect!
 - Get login credentials for the Starburst Harbor Helm Charts repository.
 - Update [mini-starburst.sh](mini-starburst.sh) with these credentials.
-- In mini-starburst.sh you can also update Starburst Enterprice version to be deployed.
+- In mini-starburst.sh you can also update Starburst Enterprise version to be deployed.
 - Go through the requirements section below to make sure you have all the dependencies before starting.
 
 
@@ -100,7 +100,7 @@ Install Hive Helm chart
 helm install hive starburstdata/starburst-hive --version $STARBURST_VERSION --values hive_values.yaml
 ```
 
-Install Starburst Helm chart
+Install Starburst Enterprise Helm chart
 ```
 helm install starburst-enterprise starburstdata/starburst-enterprise --version $STARBURST_VERSION --values starburst_values.yaml
 ```
