@@ -20,12 +20,12 @@ NB: Before you run mini-starburst.sh: Make sure you do the following:
 - Go through the requirements section below to make sure you have all the dependencies before starting.
 
 
-## Requirements:
+## Requirements
 - minikube [Installation instruction](https://minikube.sigs.k8s.io/docs/start) (no need to start a cluster)
 - kubectl [Installation instructions](https://kubernetes.io/docs/tasks/tools)
 - Helm [Installation instructions](https://helm.sh/docs/intro/install)
  
-## Run:
+## Run
 
 ```
 mini-starburst.sh
@@ -35,7 +35,7 @@ At the end of the deployment process (around 5 minutes duration), 3 Web user int
 - Ranger UI to manage users, roles and permission policies
 - Kubernetes dashboard UI to manage applications and the cluster
 
-## Clean:
+## Clean
 
 To delete Helm releases and repositories:
 ```
