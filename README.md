@@ -15,7 +15,7 @@ NB: Before you run mini-starburst.sh: Make sure you do the following:
 
 - Add in your folder a Starburst license file (**starburstdata.license**), which you can get from your friendly local Starburst Solutions Architect!
 - Get login credentials for the Starburst Harbor Helm Charts repository.
-- Update mini-starburst.sh with these credentials.
+- Update [mini-starburst.sh](mini-starburst.sh) with these credentials.
 - In mini-starburst.sh you can also update Starburst Enterprice version to be deployed.
 - Go through the requirements section below to make sure you have all the dependencies before starting.
 
