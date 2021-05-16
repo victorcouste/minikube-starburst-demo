@@ -21,7 +21,7 @@ NB: Before you run mini-starburst.sh: Make sure you do the following:
 
 
 ## Requirements
-- minikube - [Installation instruction](https://minikube.sigs.k8s.io/docs/start) (no need to start a cluster)
+- minikube - [Installation instructions](https://minikube.sigs.k8s.io/docs/start) (no need to start a cluster)
 - kubectl - [Installation instructions](https://kubernetes.io/docs/tasks/tools)
 - Helm - [Installation instructions](https://helm.sh/docs/intro/install)
  
@@ -31,8 +31,8 @@ NB: Before you run mini-starburst.sh: Make sure you do the following:
 mini-starburst.sh
 ```
 At the end of the deployment process (around 5 minutes duration), 3 Web user interfaces will open:
-- Starburst Enterprise Insights UI to monitor and query the Starburst cluster
-- Ranger UI to manage users, roles and permission policies
+- Starburst Enterprise Insights UI to monitor and query the Starburst cluster (**starburst_service** user)
+- Ranger UI to manage users, roles and permission policies (**admin/RangerPassword1** credentials)
 - Kubernetes dashboard UI to manage applications and the cluster
 
 ## Clean
@@ -113,12 +113,12 @@ kubectl get pods -o wide
 kubectl get services
 ```
 
-Get Ranger UI URL, and connect with admin/RangerPassword1 credentials
+Get Ranger UI URL, and login with **admin/RangerPassword1** credentials
 ```
 ranger_url=$(minikube service ranger --url)
 ```
 
-Get Starburst Insights UI URL, and connect with starburst_service user
+Get Starburst Insights UI URL, and login with **starburst_service** user
 ```
 starburst_url=$(minikube service starburst --url)
 starburst_insights_url=$starburst_url'/ui/insights'
