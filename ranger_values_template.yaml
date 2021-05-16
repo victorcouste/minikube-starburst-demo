@@ -1,0 +1,52 @@
+registryCredentials:
+  enabled: true
+  registry: harbor.starburstdata.net/starburstdata
+  username: __USERNAME_HARBOR_CHART_REPO__
+  password: __PASSWORD_HARBOR_CHART_REPO__
+
+expose:
+  type: "loadBalancer"
+  loadBalancer:
+    name: "ranger"
+    ports:
+      http:
+        port: 6080
+
+admin:
+  resources:
+    requests:
+      memory: "500Mi"
+      cpu: 0.5
+    limits:
+      memory: "1Gi"
+      cpu: 1
+
+usersync:
+  enabled: false
+  resources:
+    requests:
+      memory: "500Mi"
+      cpu: 0.5
+    limits:
+      memory: "1Gi"
+      cpu: 1
+
+database:
+  type: "internal"
+  internal:
+    resources:
+      requests:
+        memory: "500Mi"
+        cpu: 0.5
+      limits: 
+        memory: "1Gi"
+        cpu: 1
+
+datasources:
+  - name: starburst-enterprise
+    host: starburst
+    port: 8080
+    username: starburst_service
+    password: RangerPassword123
+
+initFile: files/initFile.sh

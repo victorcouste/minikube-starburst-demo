@@ -1,0 +1,24 @@
+registryCredentials:
+  enabled: true
+  registry: harbor.starburstdata.net/starburstdata
+  username: __USERNAME_HARBOR_CHART_REPO__
+  password: __PASSWORD_HARBOR_CHART_REPO__
+
+database:
+  type: internal
+  internal:
+    resources:
+      requests:
+        memory: "500Mi"
+        cpu: 0.25
+      limits:
+        memory: "1Gi"
+        cpu: 1
+
+resources:
+  requests:
+    memory: "500Mi"
+    cpu: 0.25
+  limits:
+    memory: "1Gi"
+    cpu: 1

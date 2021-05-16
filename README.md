@@ -2,7 +2,7 @@
 
 Command line, script and templates to quickly setup a [Starburst Enterprise](https://www.starburst.io/platform/starburst-enterprise/) demonstration environnement on a small and local [Kubernetes](https://kubernetes.io) cluster.
 
-The goal is to deploy Starburst Enterprise (based on [trino](https://trino.io) / PrestoSQL MPP SQL engine), [Apache Ranger](https://ranger.apache.org), a Hive metastore and a PostgreSQL database to a single-node [minikube](https://github.com/kubernetes/minikube) cluster. Deployments to the cluster are done via [Helm](https://helm.sh) charts installations, and Ranger + Hive are using internal databases.
+The goal is to deploy Starburst Enterprise (based on [trino](https://trino.io) / PrestoSQL MPP SQL engine), [Apache Ranger](https://ranger.apache.org), a Hive metastore and a PostgreSQL database to a single-node [minikube](https://github.com/kubernetes/minikube) cluster. Deployments to the cluster are done via [Helm](https://helm.sh) charts installations, and Ranger + Hive use internal databases.
 
 
 ## Disclaimer
@@ -31,16 +31,23 @@ NB: Before you run mini-starburst.sh: Make sure you do the following:
 mini-starburst.sh
 ```
 At the end of the execution, 3 Web user interfaces will open:
-- Starburst Enterprise Insights UI to monitor and query Starburst.cluster
-- Ranger UI to manage users, roles and permission policies.
-- Kubernetes dashboard UI to manage applications and the cluster.
+- Starburst Enterprise Insights UI to monitor and query the Starburst cluster
+- Ranger UI to manage users, roles and permission policies
+- Kubernetes dashboard UI to manage applications and the cluster
+
+To delete Helm releases, stop or delete the cluster:
+```
+helm delete ranger hive starburst-enterprise postgresql
+minikube stop
+minikube delete
+```
 
 ## Command line explanation
 
-Main command line executed in mini-starburst.sh:
+Main commands executed in mini-starburst.sh shell script:
 
 ```
-# Start a singlee-node 6CPUs and 16GB memory minikube cluster
+# Start a single-node 6CPUs and 16GB memory minikube cluster
 minikube start --cpus 6 --memory 16GB
 
 # Add bitnami Helm repo and install PostgreSQL chart
@@ -50,15 +57,15 @@ helm install postgresql bitnami/postgresql
 # Get PostgreSQL default password
 export POSTGRES_PASSWORD=$(kubectl get secret --namespace default postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
 
-# Create an event_logger PostgreSQL database to store Starburst event logs and Insights UI data
+# Create an event_logger PostgreSQL database to store Starburst event logs and Insights data
 kubectl run postgresql-client --rm --tty -i --restart='Never' --namespace default --image docker.io/bitnami/postgresql:11.11.0-debian-10-r0 --env="PGPASSWORD=$POSTGRES_PASSWORD" --command -- psql --host postgresql -U postgres -d postgres -p 5432 -c 'CREATE DATABASE event_logger'
 
-# Update chart values template files with PostgreSQL password and Starburst Harbor Helm repo credentials
+# Update chart values template files with PostgreSQL password and Starburst Helm repo credentials
 sed "s/__POSTGRES_PASSWORD__/$POSTGRES_PASSWORD/g; s/__USERNAME_HARBOR_CHART_REPO__/$USERNAME_HARBOR_CHART_REPO/g; s/__PASSWORD_HARBOR_CHART_REPO__/$PASSWORD_HARBOR_CHART_REPO/g;" starburst_values_template.yaml > starburst_values.yaml
 sed "s/__USERNAME_HARBOR_CHART_REPO__/$USERNAME_HARBOR_CHART_REPO/g; s/__PASSWORD_HARBOR_CHART_REPO__/$PASSWORD_HARBOR_CHART_REPO/g;" ranger_values_template.yaml > ranger_values.yaml
 sed "s/__USERNAME_HARBOR_CHART_REPO__/$USERNAME_HARBOR_CHART_REPO/g; s/__PASSWORD_HARBOR_CHART_REPO__/$PASSWORD_HARBOR_CHART_REPO/g;" hive_values_template.yaml > hive_values.yaml
 
-# Add Starburst Harbor Helm repo
+# Add Starburst Harbor Helm repository
 helm repo add --username $USERNAME_HARBOR_CHART_REPO --password $PASSWORD_HARBOR_CHART_REPO starburstdata https://harbor.starburstdata.net/chartrepo/starburstdata
 
 # Create Starburst secret for license keys
