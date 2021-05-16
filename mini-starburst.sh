@@ -82,18 +82,17 @@ kubectl get services
 
 echo "\nApplications deployment in progress... (4 minutes)"
 spinner 70
+kubectl get pods -o wide
 echo "\n25% done, 3 minutes left"
-kubectl get pods -o wide
 spinner 70
+kubectl get pods -o wide
 echo "\n50% done, 2 minutes left"
-kubectl get pods -o wide
 spinner 70
+kubectl get pods -o wide
 echo "\n75% done, 1 minute left"
-kubectl get pods -o wide
 spinner 70
-echo "\n"
 
-echo "\n---------- Deployments final status ------------\n"
+echo "\n---------- Deployments finished - Final status ------------\n"
 
 helm list
 kubectl get deployments
@@ -101,10 +100,10 @@ kubectl get pods -o wide
 kubectl get services
 
 echo "\n----------------------------------------------------------------------------------"
-echo "  Open in a Web browser:"
-echo "  - Starburst Enterprise Insights UI to monitor and query the Starburst cluster"
-echo "  - Ranger UI to manage users, roles and permission policies"
-echo "  - Kubernetes dashboard UI to manage applications and the cluster"
+echo "  Opening in a Web browser:"
+echo "    - Starburst Enterprise Insights UI to monitor and query the Starburst cluster"
+echo "    - Ranger UI to manage users, roles and permission policies"
+echo "    - Kubernetes dashboard UI to manage applications and the cluster"
 echo "----------------------------------------------------------------------------------\n"
 
 ranger_url=$(minikube service ranger --url)

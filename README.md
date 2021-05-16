@@ -11,7 +11,7 @@ NB: *This release does not form any part of the Starburst product. It is not off
 
 ## Important
 
-NB: Before you run mini-starburst.sh: Make sure you do the following:
+NB: Before you run **mini-starburst.sh**, make sure you do the following:
 
 - Add in your folder a Starburst license file (**starburstdata.license**), which you can get from your friendly local Starburst Solutions Architect!
 - Get login credentials for the Starburst Harbor Helm Charts repository.
@@ -33,11 +33,11 @@ mini-starburst.sh
 At the end of the deployment process (around 5 minutes duration), 3 Web user interfaces will open:
 - Starburst Enterprise Insights UI to monitor and query the Starburst cluster (**starburst_service** user)
 - Ranger UI to manage users, roles and permission policies (**admin/RangerPassword1** credentials)
-- Kubernetes dashboard UI to manage applications and the cluster
+- Kubernetes dashboard UI to manage applications deployed and the cluster
 
 ## Clean
 
-To delete Helm releases and repositories:
+To delete Helm releases or repositories:
 ```
 helm delete ranger hive starburst-enterprise postgresql
 helm repo remove starburstdata bitnami
@@ -50,7 +50,7 @@ minikube delete
 
 ## Command line explanation
 
-Main commands executed in mini-starburst.sh shell script.
+Main commands executed in [mini-starburst.sh](mini-starburst.sh) shell script.
 
 Start a single-node 6CPUs and 16GB memory minikube cluster
 ```
