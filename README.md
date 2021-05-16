@@ -1,5 +1,7 @@
 # minikube-starburst-demo
 
+:::image type="content" source="minikube-starburst.png" alt-text="Minikube Starburst":::
+
 Command line, script and templates to quickly setup a [Starburst Enterprise](https://www.starburst.io/platform/starburst-enterprise/) demonstration environnement on a small and local [Kubernetes](https://kubernetes.io) cluster.
 
 The goal is to deploy Starburst Enterprise (based on [trino](https://trino.io) / PrestoSQL MPP SQL engine), [Apache Ranger](https://ranger.apache.org), a Hive metastore and a PostgreSQL database to a single-node [minikube](https://github.com/kubernetes/minikube) cluster. Deployments to the cluster are done via [Helm](https://helm.sh) charts installations, and Ranger + Hive use internal databases.
