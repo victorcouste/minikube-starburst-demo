@@ -2,7 +2,7 @@
 
 Command line, script and templates to quickly setup a [Starburst Enterprise](https://www.starburst.io/platform/starburst-enterprise/) demonstration environnement on a small and local [Kubernetes](https://kubernetes.io) cluster.
 
-The goal is to deploy Starburst Enterprise (based on [trino](https://trino.io) / PrestoSQL MPP SQL engine), [Apache Ranger](https://ranger.apache.org), a Hive metastore and a PostgreSQL database to a single-node Kubernetes [minikube](https://github.com/kubernetes/minikube) cluster. Deployments to the cluster are done via [Helm](https://helm.sh) charts installations.
+The goal is to deploy Starburst Enterprise (based on [trino](https://trino.io) / PrestoSQL MPP SQL engine), [Apache Ranger](https://ranger.apache.org), a Hive metastore and a PostgreSQL database to a single-node [minikube](https://github.com/kubernetes/minikube) cluster. Deployments to the cluster are done via [Helm](https://helm.sh) charts installations, and Ranger + Hive are using internal databases.
 
 
 ## Disclaimer
@@ -30,16 +30,20 @@ NB: Before you run mini-starburst.sh: Make sure you do the following:
 ```
 mini-starburst.sh
 ```
+At the end of the execution, 3 Web user interfaces will open:
+- Starburst Enterprise Insights UI to monitor and query Starburst.cluster
+- Ranger UI to manage users, roles and permission policies.
+- Kubernetes dashboard UI to manage applications and the cluster.
 
 ## Command line explanation
 
-Main commend line executed in mini-starburst.sh:
+Main command line executed in mini-starburst.sh:
 
 ```
-# Start a 6CPUs and 16GB memory minikube cluster
+# Start a singlee-node 6CPUs and 16GB memory minikube cluster
 minikube start --cpus 6 --memory 16GB
 
-# Add bitnami Helm repo to install PostgreSQL chart
+# Add bitnami Helm repo and install PostgreSQL chart
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install postgresql bitnami/postgresql
 
@@ -57,7 +61,7 @@ sed "s/__USERNAME_HARBOR_CHART_REPO__/$USERNAME_HARBOR_CHART_REPO/g; s/__PASSWOR
 # Add Starburst Harbor Helm repo
 helm repo add --username $USERNAME_HARBOR_CHART_REPO --password $PASSWORD_HARBOR_CHART_REPO starburstdata https://harbor.starburstdata.net/chartrepo/starburstdata
 
-# Create Starburst secret for the license file
+# Create Starburst secret for license keys
 kubectl create secret generic starburstdata --from-file=starburstdata.license
 
 # Install Ranger Helm chart
@@ -88,11 +92,11 @@ starburst_insights_url=$starburst_url'/ui/insights'
 # Connect with starburst_service user
 
 # If you want to connect to the cluster from a local client
-kubectl port-forward service/starburst 7080:8080"
-# New URL http://localhost:7080
-# JDBC connection string jdbc:trino://localhost:7080
+kubectl port-forward service/starburst 7080:8080ÒÒ
+# New URL http://localhost:7080/ui/insights
+# JDBC URL jdbc:trino://localhost:7080
 
-# To  open minikube dasboard (Kubernetes admin UI) in http://127.0.0.1:65401/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy"
-# Command : minikube dashboard
+# To  open minikube dashboard (Kubernetes dashboard UI for applications and cluster management/monitoring) at http://127.0.0.1:65401/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy
+minikube dashboard
 
 ```
