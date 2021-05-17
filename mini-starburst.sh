@@ -3,7 +3,7 @@
 spinner () {
 secs=$1
 SECONDS=0
-while (( SECONDS < secs ));do for s in / - \\ \|; do printf "\r$s";sleep .1;done;done
+while (( SECONDS < $secs ));do for s in / - \\ \|; do printf "\r$s";sleep .1;done;done
 }
 
 #----------------------------------------------------------------------------------
@@ -19,8 +19,8 @@ echo "\n---------------------------------"
 echo " minikube cluster creation"
 echo "---------------------------------\n"
 
-# Start a single-node 6CPUs and 16GB memory minikube cluster
-minikube start --cpus 6 --memory 16GB
+# Start a single-node 6CPUs and 16GB memory minikube cluster named "starburst-demo"
+minikube start --cpus 6 --memory 16GB --profile starburst-demo
 echo "\n minikube cluster status"
 kubectl cluster-info
 
@@ -106,12 +106,12 @@ echo "    - Ranger UI to manage users, roles and permission policies"
 echo "    - Kubernetes dashboard UI to manage applications and the cluster"
 echo "----------------------------------------------------------------------------------\n"
 
-ranger_url=$(minikube service ranger --url)
+ranger_url=$(minikube service ranger --url --profile starburst-demo)
 echo "Ranger UI URL "$ranger_url
 echo "Login with admin/RangerPassword1 credentials\n"
 open $ranger_url
 
-starburst_url=$(minikube service starburst --url)
+starburst_url=$(minikube service starburst --url --profile starburst-demo)
 echo "Starburst Insights UI URL "$starburst_url'/ui/insights'
 echo "Login with starburst_service user\n"
 open $starburst_url'/ui/insights'
@@ -122,4 +122,4 @@ echo "New URL http://localhost:7080/ui/insights"
 echo "JDBC URL jdbc:trino://localhost:7080"
 
 echo "\nOpen minikube dashboard (Kubernetes dashboard UI for applications and cluster management/monitoring)\n"
-minikube dashboard
+minikube dashboard --profile starburst-demo

@@ -31,9 +31,9 @@ NB: Before you run **mini-starburst.sh**, make sure you do the following:
 ## Run
 
 ```
-#If you have already a minikube cluster running, stop and delete it
-minikube stop
-minikube delete
+#If you have already a "starburst-demo" minikube cluster running, stop and delete it
+minikube stop --profile starburst-demo
+minikube delete --profile starburst-demo
 
 mini-starburst.sh
 ```
@@ -53,9 +53,9 @@ And 3 Web user interfaces will open:
 
 Main commands executed in [mini-starburst.sh](mini-starburst.sh) shell script.
 
-Start a single-node 6CPUs and 16GB memory minikube cluster
+Start a new single-node 6CPUs and 16GB memory minikube cluster named starburst-demo
 ```
-minikube start --cpus 6 --memory 16GB
+minikube start --cpus 6 --memory 16GB --profile starburst-demo
 ```
 
 Add bitnami Helm repo and install PostgreSQL chart
@@ -116,12 +116,12 @@ kubectl get services
 
 Get Ranger UI URL, and login with **admin/RangerPassword1** credentials
 ```
-ranger_url=$(minikube service ranger --url)
+ranger_url=$(minikube service ranger --url --profile starburst-demo)
 ```
 
 Get Starburst Insights UI URL, and login with **starburst_service** user
 ```
-starburst_url=$(minikube service starburst --url)
+starburst_url=$(minikube service starburst --url --profile starburst-demo)
 starburst_insights_url=$starburst_url'/ui/insights'
 ```
 
@@ -135,7 +135,7 @@ kubectl port-forward service/starburst 7080:8080
 
 To  open minikube dashboard (Kubernetes dashboard UI for applications and cluster management/monitoring)
 ```
-minikube dashboard
+minikube dashboard --profile starburst-demo
 ```
 
 ## Clean
@@ -147,6 +147,6 @@ helm repo remove starburstdata bitnami
 ```
 To stop or delete the cluster:
 ```
-minikube stop
-minikube delete
+minikube stop --profile starburst-demo
+minikube delete --profile starburst-demo
 ```
