@@ -31,6 +31,10 @@ NB: Before you run **mini-starburst.sh**, make sure you do the following:
 ## Run
 
 ```
+#If you have already a minikube cluster running, stop and delete it
+minikube stop
+minikube delete
+
 mini-starburst.sh
 ```
 At the end of the deployment process (around 5 minutes duration), there will be 6 pods in your cluster:
