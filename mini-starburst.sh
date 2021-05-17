@@ -88,9 +88,13 @@ done
 
 echo "\n---------- Deployments finished - Final status ------------\n"
 
+echo "Helm releases"
 helm list
+echo "\nCluster Deployements"
 kubectl get deployments
+echo "\nCluster Pods"
 kubectl get pods -o wide
+echo "\nCluster Services"
 kubectl get services
 
 echo "\n----------------------------------------------------------------------------------"

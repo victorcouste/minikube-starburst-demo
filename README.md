@@ -21,7 +21,7 @@ NB: Before you run **mini-starburst.sh**, make sure you do the following:
 - Update [mini-starburst.sh](mini-starburst.sh) with these credentials.
 - In mini-starburst.sh you can also update Starburst Enterprise version to be deployed.
 - Go through the requirements section below to make sure you have all the dependencies before starting.
-
+- Sorry, tested only on Mac so maybe some issues on other OS.
 
 ## Requirements
 - minikube - [Installation instructions](https://minikube.sigs.k8s.io/docs/start) (no need to start a cluster)
@@ -37,6 +37,7 @@ minikube delete --profile starburst-demo
 
 mini-starburst.sh
 ```
+
 At the end of the deployment process (around 5 minutes duration), there will be 6 pods in your cluster:
 - 1 Trino Coordinator pod
 - 2 Trino Worker pods
