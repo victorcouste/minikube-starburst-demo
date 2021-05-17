@@ -43,7 +43,7 @@ spinner 5
 
 echo "\nCreate event_logger PostgreSQL database to store Starburst event logs and Insights data..."
 kubectl run postgresql-client --rm --tty -i --restart='Never' --namespace default --image docker.io/bitnami/postgresql:11.11.0-debian-10-r0 --env="PGPASSWORD=$POSTGRES_PASSWORD" --command -- psql --host postgresql -U postgres -d postgres -p 5432 -c 'CREATE DATABASE event_logger'
-spinner 10
+spinner 20
 
 echo "\nUpdate chart values template files with PostgreSQL password and Starburst Helm repo credentials..."
 sed "s/__POSTGRES_PASSWORD__/$POSTGRES_PASSWORD/g; s/__USERNAME_HARBOR_CHART_REPO__/$USERNAME_HARBOR_CHART_REPO/g; s/__PASSWORD_HARBOR_CHART_REPO__/$PASSWORD_HARBOR_CHART_REPO/g;" starburst_values_template.yaml > starburst_values.yaml
@@ -80,17 +80,11 @@ kubectl get pods -o wide
 echo "\nCluster Services"
 kubectl get services
 
-echo "\nApplications deployment in progress... (4 minutes)"
-spinner 70
-kubectl get pods -o wide
-echo "\n25% done, 3 minutes left"
-spinner 70
-kubectl get pods -o wide
-echo "\n50% done, 2 minutes left"
-spinner 70
-kubectl get pods -o wide
-echo "\n75% done, 1 minute left"
-spinner 70
+echo "\nApplications deployment in progress... (around 4 minutes left)"
+
+while [ "$(kubectl get pods -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true true true true true true" ];do 
+	spinner 30
+done
 
 echo "\n---------- Deployments finished - Final status ------------\n"
 
