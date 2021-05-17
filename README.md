@@ -3,7 +3,7 @@
 <img src="https://github.com/victorcouste/minikube-starburst-demo/raw/main/minikube-starburst.png" width="60%" height="60%">
 
 
-Command line, script and templates to quickly setup a [Starburst Enterprise](https://www.starburst.io/platform/starburst-enterprise/) demonstration environnement on a small and local [Kubernetes](https://kubernetes.io) cluster.
+Command line, script and templates to quickly setup a [Starburst Enterprise](https://www.starburst.io/platform/starburst-enterprise/) demonstration environnement on a tiny and local [Kubernetes](https://kubernetes.io) cluster.
 
 The goal is to deploy Starburst Enterprise (based on distributed SQL engine [trino](https://trino.io), formerly PrestoSQL), [Apache Ranger](https://ranger.apache.org), a Hive metastore and a PostgreSQL database to a single-node [minikube](https://github.com/kubernetes/minikube) cluster. Deployments to the cluster are done via [Helm](https://helm.sh) charts installations, and Ranger + Hive use internal databases.
 
@@ -35,7 +35,7 @@ mini-starburst.sh
 ```
 At the end of the deployment process (around 5 minutes duration), there will be 6 pods in your cluster:
 - 1 Trino Coordinator pod
-- 2 Trino Workers pod
+- 2 Trino Worker pods
 - 1 Ranger pod
 - 1 Hive pod
 - 1 PostgreSQL pod
