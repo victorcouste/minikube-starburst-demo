@@ -6,6 +6,9 @@ SECONDS=0
 while (( SECONDS < $secs ));do for s in / - \\ \|; do printf "\r$s";sleep .1;done;done
 }
 
+start_minute=`date +%M`
+install_max_minutes=10
+
 #----------------------------------------------------------------------------------
 
 # Starburst Harbor Helm repository credentials
@@ -14,6 +17,7 @@ PASSWORD_HARBOR_CHART_REPO="xxxxxxxx"
 
 # Starburst Enterprise version
 STARBURST_VERSION=356.1.0
+
 
 echo "\n---------------------------------"
 echo " minikube cluster creation"
@@ -82,42 +86,53 @@ kubectl get services
 
 echo "\nApplications deployment in progress... (around 4 minutes left)"
 
-while [ "$(kubectl get pods -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true true true true true true" ];do 
+started=true
+while [ "$(kubectl get pods -o jsonpath='{.items[*].status.containerStatuses[0].ready}')" != "true true true true true true" ];do
+	check_minute=`date +%M`
+	if [ $((10#$check_minute-10#$start_minute)) -gt $install_max_minutes ]; then
+	  echo "\n\n---------- Deployments not finished - too long, check error messages or minikube dasboard ---- \n"
+	  started=false
+      break
+  	fi
 	spinner 30
 done
 
-echo "\n---------- Deployments finished - Final status ------------\n"
+if [ $started = "true" ]; then
 
-echo "Helm releases"
-helm list
-echo "\nCluster Deployements"
-kubectl get deployments
-echo "\nCluster Pods"
-kubectl get pods -o wide
-echo "\nCluster Services"
-kubectl get services
+	echo "\n\n---------- Deployments finished - Final status ------------\n"
 
-echo "\n----------------------------------------------------------------------------------"
-echo "  Opening in a Web browser:"
-echo "    - Starburst Enterprise Insights UI to monitor and query the Starburst cluster"
-echo "    - Ranger UI to manage users, roles and permission policies"
-echo "    - Kubernetes dashboard UI to manage applications and the cluster"
-echo "----------------------------------------------------------------------------------\n"
+	echo "Helm releases"
+	helm list
+	echo "\nCluster Deployements"
+	kubectl get deployments
+	echo "\nCluster Pods"
+	kubectl get pods -o wide
+	echo "\nCluster Services"
+	kubectl get services
 
-ranger_url=$(minikube service ranger --url --profile starburst-demo)
-echo "Ranger UI URL "$ranger_url
-echo "Login with admin/RangerPassword1 credentials\n"
-open $ranger_url
+	echo "\n----------------------------------------------------------------------------------"
+	echo "  Opening in a Web browser:"
+	echo "    - Starburst Enterprise Insights UI to monitor and query the Starburst cluster"
+	echo "    - Ranger UI to manage users, roles and permission policies"
+	echo "    - Kubernetes dashboard UI to manage applications and the cluster"
+	echo "----------------------------------------------------------------------------------\n"
 
-starburst_url=$(minikube service starburst --url --profile starburst-demo)
-echo "Starburst Insights UI URL "$starburst_url'/ui/insights'
-echo "Login with starburst_service user\n"
-open $starburst_url'/ui/insights'
+	ranger_url=$(minikube service ranger --url --profile starburst-demo)
+	echo "Ranger UI URL "$ranger_url
+	echo "Login with admin/RangerPassword1 credentials\n"
+	open $ranger_url
 
-echo "If you want to connect to the cluster from a local client:"
-echo "Command to execute :  kubectl port-forward service/starburst 7080:8080"
-echo "New URL http://localhost:7080/ui/insights"
-echo "JDBC URL jdbc:trino://localhost:7080"
+	starburst_url=$(minikube service starburst --url --profile starburst-demo)
+	echo "Starburst Insights UI URL "$starburst_url'/ui/insights'
+	echo "Login with starburst_service user\n"
+	open $starburst_url'/ui/insights'
+
+	echo "If you want to connect to the cluster from a local client:"
+	echo "Command to execute :  kubectl port-forward service/starburst 7080:8080"
+	echo "New URL http://localhost:7080/ui/insights"
+	echo "JDBC URL jdbc:trino://localhost:7080"
+
+fi
 
 echo "\nOpen minikube dashboard (Kubernetes dashboard UI for applications and cluster management/monitoring)\n"
 minikube dashboard --profile starburst-demo

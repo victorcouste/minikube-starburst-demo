@@ -151,3 +151,19 @@ To stop or delete the cluster:
 minikube stop --profile starburst-demo
 minikube delete --profile starburst-demo
 ```
+
+## Troubleshooting
+
+During PostgreSQL database creation, you may see the below error message.
+
+It appears randomly, try to run the script again.
+
+```
+Create event_logger PostgreSQL database to store Starburst event logs and Insights data...
+If you don't see a command prompt, try pressing enter.
+psql: could not connect to server: Connection refused
+	Is the server running on host "postgresql" (10.110.194.129) and accepting
+	TCP/IP connections on port 5432?
+pod "postgresql-client" deleted
+pod default/postgresql-client terminated (Error)
+```
